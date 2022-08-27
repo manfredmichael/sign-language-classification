@@ -4,8 +4,8 @@ import torch.nn as nn
 import pytorch_lightning as pl
 from torchmetrics import Accuracy
 
-class LitModel(pl.LightningModule):
-    def __init__(self, num_classes, weights, learninh_rate=2e-4):
+class ASLModel(pl.LightningModule):
+    def __init__(self, num_classes, learning_rate=2e-4):
         super().__init__()
         
         # log hyperparameters
@@ -13,7 +13,8 @@ class LitModel(pl.LightningModule):
         self.learning_rate = learning_rate
         self.num_classes = num_classes
         
-        self.model = convnext_tiny(weights=weights)
+        self.model = convnext_tiny()
+
 
         num_features = self.model.classifier[2].in_features
         self.model.classifier[2] = nn.Linear(num_features, num_classes)
