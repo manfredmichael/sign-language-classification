@@ -51,6 +51,11 @@ def load_image(imagepath):
   img = torch.unsqueeze(img, 0)
   return img
 
+def image_to_tensor(image):
+  img = transform.forward(image)
+  img = torch.unsqueeze(img, 0)
+  return img
+
 def get_gradcam_visualization(model, input_tensor, category):
     target_layers = [model.model.features[-1]]
     cam = GradCAM(model=model, target_layers=target_layers)
