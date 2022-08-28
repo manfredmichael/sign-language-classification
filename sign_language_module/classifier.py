@@ -10,24 +10,26 @@ model = get_model()
 
 
 def predict(img, model=model, visualization=False):
-    result = model(img)
-    torch.argmax(result)
-    result = num2cat[torch.argmax(result).item()]
+    predictions = model(img)
+    num_class = torch.argmax(predictions).item()
+    probs = torch.nn.functional.softmax(predictions, dim=1)
+    confidence_score = "{:.3f}".format(probs[0][num_class].item())
+    result = num2cat[num_class]
     if visualization:
         visualization = get_gradcam_visualization(model, img, result)
-        return result, visualization
-    return result
+        return result, confidence_score, visualization
+    return result, confidence_score
 
 
 if __name__ == '__main__':
     img = load_image("img/B.png")
     a = torch.squeeze(img, axis=0).numpy()
     
-    result, visualization = predict(img, model=model, visualization=True)
+    result, confidence_score, visualization = predict(img, model=model, visualization=True)
 
     import matplotlib.pyplot as plt
     plt.figure(figsize=(10, 10))
-    plt.title(result.upper(), fontsize=56)
+    plt.title(f"{result.upper()} ({confidence_score})", fontsize=56)
     plt.imshow(visualization)
     plt.show()
 
