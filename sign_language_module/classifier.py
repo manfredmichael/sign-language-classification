@@ -1,5 +1,5 @@
 from models import get_model 
-from utils import num2cat, load_image, visualize_gradcam
+from utils import num2cat, load_image, get_gradcam_visualization 
 import torch
 import cv2
 import numpy as np
@@ -19,18 +19,16 @@ def predict(model, img):
 if __name__ == '__main__':
     img = load_image("img/B.png")
     a = torch.squeeze(img, axis=0).numpy()
-    # print(a)
-    print(a.shape)
-    # a = np.transpose(a, [1, 2, 0])
-    # print(a)
-    # cv2.imshow('img', a)
+    
     result = predict(model, img)
-    visualize_gradcam(model, img, result)
+    visualization = get_gradcam_visualization(model, img, result)
+
+    import matplotlib.pyplot as plt
+    plt.figure(figsize=(10, 10))
+    plt.title(result.upper(), fontsize=56)
+    plt.imshow(visualization)
+    plt.show()
 
     print('result:', result)
     import time
     time.sleep(20000)
-
-
-
-    
