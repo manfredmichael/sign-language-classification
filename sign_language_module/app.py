@@ -1,10 +1,12 @@
 from io import BytesIO
 from xmlrpc.server import resolve_dotted_attribute
-from PIL import Image
 from flask import Flask, request, send_file, jsonify
 from base64 import decodebytes, encodebytes
 import numpy as np
 from classifier import predict 
+from PIL import Image
+from matplotlib import cm
+from utils import image_to_tensor
 
 app = Flask(__name__)
 
@@ -21,24 +23,20 @@ def decode_image(image_bytes):
     image_bytes = decodebytes(image_bytes)
     image_bytes = BytesIO(image_bytes)
     image_bytes = Image.open(image_bytes)
-    return np.array(image_bytes)
+    return image_bytes
 
 @app.route("/predict", methods=['POST'])
 def make_prediction():
     if request.method == 'POST':
         webcam = request.files['webcam'].read()
-        background = request.files['background'].read()
-        virtual_background = request.files['virtual_background'].read()
-
         webcam = decode_image(webcam)
-        background = decode_image(background)
-        virtual_background = decode_image(virtual_background)
+        webcam = image_to_tensor(webcam)
 
-        result, visualization = predict(webcam, visualization=True)
-        result = get_response_image(result)
+        result, confidence_score, visualization = predict(webcam, visualization=True)
         visualization = get_response_image(visualization)
         
         return jsonify({'result': result,
+                        'confidence_score': confidence_score,
                         'visualization': visualization})
 
 if __name__ == "__main__":
