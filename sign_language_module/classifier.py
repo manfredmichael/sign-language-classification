@@ -9,10 +9,13 @@ import numpy as np
 model = get_model()
 
 
-def predict(model, img):
+def predict(img, model=model, visualization=False):
     result = model(img)
     torch.argmax(result)
     result = num2cat[torch.argmax(result).item()]
+    if visualization:
+        visualization = get_gradcam_visualization(model, img, result)
+        return result, visualization
     return result
 
 
@@ -20,8 +23,7 @@ if __name__ == '__main__':
     img = load_image("img/B.png")
     a = torch.squeeze(img, axis=0).numpy()
     
-    result = predict(model, img)
-    visualization = get_gradcam_visualization(model, img, result)
+    result, visualization = predict(img, model=model, visualization=True)
 
     import matplotlib.pyplot as plt
     plt.figure(figsize=(10, 10))
