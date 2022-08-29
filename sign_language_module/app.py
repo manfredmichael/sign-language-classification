@@ -31,11 +31,12 @@ def make_prediction():
         webcam = decode_image(webcam)
         webcam = image_to_tensor(webcam)
 
-        result, confidence_score, visualization = predict(webcam, visualization=True)
+        result, confidence_score, inference_time, visualization = predict(webcam, visualization=True)
         visualization = get_response_image(visualization)
         
         return jsonify({'result': result,
                         'confidence_score': confidence_score,
+                        'inference_time': inference_time,
                         'visualization': visualization})
 
 if __name__ == "__main__":
