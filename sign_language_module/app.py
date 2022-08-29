@@ -5,7 +5,6 @@ from base64 import decodebytes, encodebytes
 import numpy as np
 from classifier import predict 
 from PIL import Image
-from matplotlib import cm
 from utils import image_to_tensor
 
 app = Flask(__name__)
