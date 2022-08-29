@@ -1,13 +1,9 @@
-from models import get_model 
 from utils import num2cat, load_image, get_gradcam_visualization 
+from models import get_model 
 import torch
-import cv2
 import numpy as np
 
-
-
 model = get_model()
-
 
 def predict(img, model=model, visualization=False):
     predictions = model(img)
