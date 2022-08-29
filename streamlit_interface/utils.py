@@ -33,6 +33,7 @@ def inference(webcam):
     response = response.json()
     result = response['result']
     confidence_score = response['confidence_score']
+    inference_time = response['inference_time']
     visualization = decode_image(response['visualization'])
 
-    return result, confidence_score, visualization
+    return result, confidence_score, inference_time, visualization

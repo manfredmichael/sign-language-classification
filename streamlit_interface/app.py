@@ -26,10 +26,11 @@ def from_picture():
         st.markdown("---")
         st.markdown(f"# GradCam Visualization")
 
-        result, confidence_score, visualization = inference(webcam)
+        result, confidence_score, inference_time, visualization = inference(webcam)
 
         st.markdown(f"##### Prediction: {result}")
         st.markdown(f"Confidence: {confidence_score}")
+        st.markdown(f"Inference time: {inference_time}")
         st.image(visualization, width=640)
 
 def from_camera():
@@ -45,10 +46,11 @@ def from_camera():
         st.markdown("---")
         st.markdown(f"# GradCam Visualization")
 
-        result, confidence_score, visualization = inference(webcam)
+        result, confidence_score, inference_time, visualization = inference(webcam)
 
         st.markdown(f"##### Prediction: {result}")
         st.markdown(f"Confidence: {confidence_score}")
+        st.markdown(f"Inference time: {inference_time}")
         st.image(visualization, width=640)
 
 def main():
